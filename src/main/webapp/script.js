@@ -48,8 +48,8 @@ async function sendForm(x_result, y_result, r_result) {
             alert("Координаты точки не попадают в ОДЗ! Пожалуйста, повторите ввод.");
         } else if (response.status === 200) {
             let point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            let x_coord = ~~(x_center + (x_result * 0.25 * image.width / r_result) - image.left);
-            let y_coord = ~~(y_center - (y_result * 0.25 * image.height / r_result) - image.top);
+            let x_coord = (200 + (x_result * (0.25 * image.width / r_result)));
+            let y_coord = (200 - (y_result * (0.25 * image.height / r_result)));
             point.setAttribute("cx",`${x_coord}`);
             point.setAttribute("cy",`${y_coord}`);
             point.setAttribute("r","2");
