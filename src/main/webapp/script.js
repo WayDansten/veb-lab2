@@ -9,6 +9,9 @@ const image = diagram.getBoundingClientRect();
 const x_center = image.left + image.width * 0.5;
 const y_center = image.top + image.height * 0.5;
 
+let x_coords = [];
+let y_coords = [];
+
 Y_FIELD.addEventListener("keypress", event => {
     if (!Y_ALLOWED_CHARACTERS_REGEXP.test(event.key)) {
         event.preventDefault();
@@ -47,15 +50,16 @@ async function sendForm(x_result, y_result, r_result) {
         if (response.status === 400) {
             alert("Координаты точки не попадают в ОДЗ! Пожалуйста, повторите ввод.");
         } else if (response.status === 200) {
-            let point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             let x_coord = (200 + (x_result * (0.25 * image.width / r_result)));
             let y_coord = (200 - (y_result * (0.25 * image.height / r_result)));
-            point.setAttribute("cx",`${x_coord}`);
-            point.setAttribute("cy",`${y_coord}`);
-            point.setAttribute("r","2");
-            point.setAttribute("stroke","red");
-            point.setAttribute("strokeWidth","2px");
-            diagram.appendChild(point);
+            if (x_coords === null || y_coord === null) {
+                x_coords = [];
+                y_coords = [];
+            }
+            x_coords.push(x_coord);
+            y_coords.push(y_coord);
+            sessionStorage.setItem("x_coords", JSON.stringify(x_coords));
+            sessionStorage.setItem("y_coords", JSON.stringify(y_coords));
             window.location.href = response.url;
         }
     }
@@ -85,3 +89,21 @@ diagram.addEventListener('click', async ({clientX, clientY}) => {
         await sendForm(x_result, y_result, r_result);
     }
 })
+
+function mark_points() {
+    x_coords = JSON.parse(sessionStorage.getItem("x_coords"));
+    y_coords = JSON.parse(sessionStorage.getItem("y_coords"));
+    let point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    if (x_coords !== null || y_coords !== null) {
+        for (let i = 0; i < x_coords.length; i++) {
+            point.setAttribute("cx", `${x_coords.at(i)}`);
+            point.setAttribute("cy", `${y_coords.at(i)}`);
+            point.setAttribute("r", "2");
+            point.setAttribute("stroke", "red");
+            point.setAttribute("strokeWidth", "2px");
+            diagram.appendChild(point);
+        }
+    }
+}
+
+window.onload = mark_points();
