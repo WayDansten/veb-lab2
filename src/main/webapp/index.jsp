@@ -80,8 +80,8 @@
                         %>
                     <tr>
                         <td><%=dataEntry.hit()%></td>
-                        <td><%=dataEntry.x()%></td>
-                        <td><%=dataEntry.y()%></td>
+                        <td><%=Math.floor(dataEntry.x() * 1000) / 1000%></td>
+                        <td><%=Math.floor(dataEntry.y() * 1000) / 1000%></td>
                         <td><%=dataEntry.r()%></td>
                         <td><%=dataEntry.execTime()%></td>
                         <td><%=dataEntry.currTime()%></td>

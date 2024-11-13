@@ -27,8 +27,8 @@
     %>
     <tr>
         <td><%=result.hit()%></td>
-        <td><%=result.x()%></td>
-        <td><%=result.y()%></td>
+        <td><%=Math.floor(result.x() * 1000) / 1000%></td>
+        <td><%=Math.floor(result.y() * 1000) / 1000%></td>
         <td><%=result.r()%></td>
         <td><%=result.execTime()%></td>
         <td><%=result.currTime()%></td>
